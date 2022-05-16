@@ -19,7 +19,7 @@ class Database {
         $this->connection = mysqli_connect(HOST, USER_NAME, PASSWORD, DB_NAME);
 
         if(mysqli_connect_error()) {
-            die('Connection error : ' .mysqli_connect_error());
+            die('Connection error : '. mysqli_connect_error());
         }
     }
 
