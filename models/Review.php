@@ -12,6 +12,7 @@ class Reviews
 
     public $id;
     public $user_id;
+    public $business_id;
     public $title;
     public $image;
     public $content;
@@ -34,12 +35,14 @@ class Reviews
         global $database;
 
         $this->user_id = trim(htmlspecialchars(strip_tags($this->user_id)));
+        $this->business_id = trim(htmlspecialchars(strip_tags($this->business_id)));
         $this->title = trim(htmlspecialchars(strip_tags($this->title)));
         $this->image = trim(htmlspecialchars(strip_tags($this->image)));
         $this->content = trim(htmlspecialchars(strip_tags($this->content)));
         
-        $sql = "INSERT INTO $this->table (user_id, title, image, content) VALUES (
+        $sql = "INSERT INTO $this->table (user_id, business_id, title, image, content) VALUES (
             '" .$database->escape_value($this->user_id). "',
+            '" .$database->escape_value($this->business_id). "',
             '" .$database->escape_value($this->title). "',
             '" .$database->escape_value($this->image). "',
             '" .$database->escape_value($this->content). "'
@@ -67,6 +70,20 @@ class Reviews
 
         return $database->fetch_array($result);
     }
+
+    public function get_reviews_per_business()
+    {
+        global $database;
+        
+        $this->business_id = trim(htmlspecialchars(strip_tags($this->business_id)));
+
+        $sql = "SELECT * FROM $this->table WHERE user_id = '" .$database->escape_value($this->business_id). "'";
+
+        $result = $database->query($sql);
+
+        return $database->fetch_array($result);
+    }
+
 } // class ends
 
 // object

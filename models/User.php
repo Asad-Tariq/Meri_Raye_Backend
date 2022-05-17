@@ -102,7 +102,7 @@ class User
     public function all_users() {
         global $database;
 
-        $sql = "SELECT id, name, image, descrption FROM $this->table";
+        $sql = "SELECT id, name, email, description FROM $this->table";
 
         $result = $database->query($sql);
 

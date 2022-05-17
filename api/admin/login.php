@@ -5,24 +5,24 @@ header('Content-type: application/json');
 header('Access-Control-Allow-Method: POST');
 header('Access-Control-Allow-Headers: Origin, Content-type, Accept'); // Handle pre-flight request
 
-include_once '../../models/User.php';
+include_once '../../models/Admin.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if ($user->validate_params($_POST['email'])) {
-        $user->email = $_POST['email'];
+    if ($admin->validate_params($_POST['email'])) {
+        $admin->email = $_POST['email'];
     } else {
         echo json_encode(array('success' => 0, 'message' => 'Email is required!'));
         die();
     }
 
-    if ($user->validate_params($_POST['password'])) {
-        $user->password = $_POST['password'];
+    if ($admin->validate_params($_POST['password'])) {
+        $admin->password = $_POST['password'];
     } else {
         echo json_encode(array('success' => 0, 'message' => 'Password is required!'));
         die();
     }
 
-    $s = $user->login();
+    $s = $admin->login();
     if (gettype($s) === 'array') {
         http_response_code(200);
         // echo json_encode(array('success' => 1, 'message' => 'Login Successful!', 'user' => $s));
