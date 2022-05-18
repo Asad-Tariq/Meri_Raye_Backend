@@ -8,14 +8,7 @@ header('Access-Control-Allow-Headers: Origin, Content-type, Accept'); // Handle 
 include_once '../../models/Review.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if ($review->validate_params($_GET['user_email'])) {
-        $review->user_email = $_GET['user_email'];
-    } else {
-        echo json_encode(array('success' => 0, 'message' => 'User email is required!'));
-        die();
-    }
-
-    echo json_encode(array('success' => 1, 'reviews' => $review->get_reviews_per_user()));
+    echo json_encode(array('success' => 1, 'reviews' => $review->all_reviews()));
 } else {
     die(header('HTTP/1.1 405 Request Method Not Allowed'));
 }

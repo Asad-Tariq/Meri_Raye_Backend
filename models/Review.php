@@ -11,8 +11,8 @@ class Reviews
     private $table = 'reviews';
 
     public $id;
-    public $user_id;
-    public $business_id;
+    public $user_email;
+    public $business_name;
     public $title;
     public $image;
     public $content;
@@ -34,15 +34,27 @@ class Reviews
     {
         global $database;
 
-        $this->user_id = trim(htmlspecialchars(strip_tags($this->user_id)));
-        $this->business_id = trim(htmlspecialchars(strip_tags($this->business_id)));
+        $this->user_email = trim(htmlspecialchars(strip_tags($this->user_email)));
+        $this->business_name = trim(htmlspecialchars(strip_tags($this->business_name)));
         $this->title = trim(htmlspecialchars(strip_tags($this->title)));
         $this->image = trim(htmlspecialchars(strip_tags($this->image)));
         $this->content = trim(htmlspecialchars(strip_tags($this->content)));
         
+        $get_user_id = "SELECT id FROM users where email = '" .$database->escape_value($this->user_email). "'";
+
+        $user_id = $database->query($get_user_id);
+
+        $return_user_id = $database->fetch_row($user_id);
+
+        $get_business_id = "SELECT id FROM businesses where name = '" .$database->escape_value($this->business_name). "'";
+
+        $business_id = $database->query($get_business_id);
+
+        $return_business_id = $database->fetch_row($business_id);
+
         $sql = "INSERT INTO $this->table (user_id, business_id, title, image, content) VALUES (
-            '" .$database->escape_value($this->user_id). "',
-            '" .$database->escape_value($this->business_id). "',
+            '" .$database->escape_value($return_user_id['id']). "',
+            '" .$database->escape_value($return_business_id['id']). "',
             '" .$database->escape_value($this->title). "',
             '" .$database->escape_value($this->image). "',
             '" .$database->escape_value($this->content). "'
@@ -81,6 +93,17 @@ class Reviews
 
         $result = $database->query($sql);
 
+        return $database->fetch_array($result);
+    }
+
+    public function all_reviews()
+    {
+        global $database;
+
+        $sql = "SELECT * FROM $this->table";
+
+        $result = $database->query($sql);
+        
         return $database->fetch_array($result);
     }
 

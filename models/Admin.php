@@ -99,39 +99,108 @@ class Admin
         }
     }
 
-    // method to delete users
-    public function delete_user($user_id) {
+    public function delete($entity_id, $table_name) {
         global $database;
 
-        $user_table = 'users';
-
-        $sql = "DELETE FROM $user_table WHERE id = '" .$database->escape_value($user_id). "'";
+        // check if to delete entity exists or not
+        $sql = "SELECT * FROM $table_name WHERE id = '" .$database->escape_value($entity_id). "'";
 
         $result = $database->query($sql);
 
-        if ($result) {
-            return true;
-        } else {
+        $ans = $database->fetch_row($result);
+
+
+        if (empty($ans)) {
             return false;
+        } else {
+            // entity exists
+            $delete_query = "DELETE FROM $table_name WHERE id = '" .$database->escape_value($entity_id). "'";
+            
+            $delete_result = $database->query($delete_query);
+
+            $checker = "SELECT * FROM $table_name WHERE id = '" .$database->escape_value($entity_id). "'";
+
+            $result_after_delete = $database->query($checker);
+
+            $deleted_entity = $database->fetch_row($result_after_delete);
+
+            if (empty($deleted_entity)) {
+                // entity successfully removed
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
+
+    // method to delete users
+    // public function delete_user($user_id) {
+    //     global $database;
+
+    //     $user_table = 'users';
+
+    //     $sql = "SELECT * FROM $user_table WHERE id = '" .$database->escape_value($user_id). "'";
+
+    //     $result = $database->query($sql);
+
+    //     $ans = $database->fetch_row($result);
+
+    //     if (empty($ans)) {
+    //         return false;
+    //     } else {
+    //         $delete = "DELETE FROM $user_table WHERE id = '" .$database->escape_value($user_id). "'";
+            
+    //         $delete_result = $database->query($delete);
+
+    //         $checker = "SELECT * FROM $user_table WHERE id = '" .$database->escape_value($user_id). "'";
+
+    //         $result_after_delete = $database->query($checker);
+
+    //         $deleted_user = $database->fetch_row($result_after_delete);
+
+    //         if (empty($deleted_user)){
+    //             return true;
+    //         }
+    //         else{
+    //             return false;
+    //         }
+    //     }
+    // }
 
     // method to delete a review
-    public function delete_review($review_id) {
-        global $database;
+    // public function delete_review($review_id) {
+    //     global $database;
 
-        $reviews_table = 'reviews';
+    //     $review_table = 'reviews';
 
-        $sql = "DELETE FROM $reviews_table WHERE id = '" .$database->escape_value($review_id). "'";
+    //     $sql = "SELECT * FROM $review_table WHERE id = '" .$database->escape_value($review_id). "'";
 
-        $result = $database->query($sql);
+    //     $result = $database->query($sql);
 
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    //     $ans = $database->fetch_row($result);
+
+    //     if (empty($ans)) {
+    //         return false;
+    //     } else {
+    //         $delete = "DELETE FROM $review_table WHERE id = '" .$database->escape_value($review_id). "'";
+            
+    //         $delete_result = $database->query($delete);
+
+    //         $checker = "SELECT * FROM $review_table WHERE id = '" .$database->escape_value($review_id). "'";
+
+    //         $result_after_delete = $database->query($checker);
+
+    //         $deleted_user = $database->fetch_row($result_after_delete);
+
+    //         if (empty($deleted_user)){
+    //             return true;
+    //         }
+    //         else{
+    //             return false;
+    //         }
+    //     }
+    // }
 
     // method to add admins
     public function add_admin($name, $email, $password, $image) {

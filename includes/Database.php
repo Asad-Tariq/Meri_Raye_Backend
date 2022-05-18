@@ -32,6 +32,7 @@ class Database
         $result = $this->connection->query($sql);
 
         if (!$result) {
+            echo mysqli_error($this->connection);
             die('Query fails : '.$sql);
         }
 

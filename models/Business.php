@@ -54,6 +54,17 @@ class Business
         }
     }
 
+    public function all_businesses()
+    {
+        global $database;
+
+        $sql = "SELECT name FROM $this->table";
+
+        $result = $database->query($sql);
+        
+        return $database->fetch_array($result);
+    }
+
 } // Class Ends
 
 // Business object

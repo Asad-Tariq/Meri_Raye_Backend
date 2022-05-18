@@ -8,10 +8,10 @@ header('Access-Control-Allow-Headers: Origin, Content-type, Accept'); // Handle 
 include_once '../../models/Review.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if ($review->validate_params($_GET['business_id'])) {
-        $review->business_id = $_GET['business_id'];
+    if ($review->validate_params($_GET['business_name'])) {
+        $review->business_name = $_GET['business_name'];
     } else {
-        echo json_encode(array('success' => 0, 'message' => 'Business ID is required!'));
+        echo json_encode(array('success' => 0, 'message' => 'Business name is required!'));
         die();
     }
 
